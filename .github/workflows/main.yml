@@ -1,0 +1,42 @@
+name: main
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
+  push:
+    branches-ignore:
+      - dump
+
+jobs:
+  update:
+    if: github.repository == 'lazka/katwarn-api'
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    name: update-dump
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: '.ci/requirements.txt'
+
+      - name: Install deps
+        run: |
+          python -m pip install --user -r .ci/requirements.txt
+
+      - name: Dump API
+        run: |
+          mkdir -p build
+          python dump.py -o build/dump.json
+          cp .ci/index.html ./build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: dump

@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "katwarn-api"
+version = "0.1.0"
+description = "Python API Client for KATWARN"
+license = "MIT"
+authors = ["Christoph Reiter <reiter.christoph@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "katwarn_api" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+requests = "^2.31.0"
+pydantic = "^1.10"
+
+[tool.poetry.group.dev.dependencies]
+types-requests = "^2.31.0.8"
+flake8 = "^6.1.0"
+
+[tool.poetry.group.folium]
+optional = true
+
+[tool.poetry.group.folium.dependencies]
+folium = "^0.14.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

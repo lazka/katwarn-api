@@ -1,0 +1,6 @@
+*.pyc
+*_cache
+*.cache
+dump.json
+*.lock
+map.html
