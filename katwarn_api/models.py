@@ -500,14 +500,21 @@ class BoundingBox(NamedTuple):
     ymax: float
 
 
-class ServiceAreasServiceArea(BaseModel, extra=Extra.forbid):
+class ServiceAreasEntry(BaseModel, extra=Extra.forbid):
     bbox: BoundingBox
     etag: str
     provider_id: str
 
 
 class ServiceAreas(BaseModel, extra=Extra.forbid):
-    index: list[ServiceAreasServiceArea]
+    index: list[ServiceAreasEntry]
+
+
+class ServiceAreaProperties(BaseModel, extra=Extra.forbid):
+    content_url: str
+    longhand: str
+    shorthand: str
+    area_infos_available: Optional[bool] = False
 
 
 class ServiceAreaObjectProperties(BaseModel, extra=Extra.forbid):
@@ -516,15 +523,17 @@ class ServiceAreaObjectProperties(BaseModel, extra=Extra.forbid):
     priority: Optional[int]
 
 
-class ServiceAreaObject(BaseModel, extra=Extra.forbid):
-    bbox: BoundingBox
+class ServiceAreaInfosEntry(BaseModel, extra=Extra.forbid):
     id: str
-    properties: ServiceAreaObjectProperties
-    type: str
+    etag: str
 
 
 class ServiceAreaInfos(BaseModel, extra=Extra.forbid):
-    infos: list
+    infos: list[ServiceAreaInfosEntry]
+
+
+class ServiceAreaInfo(BaseModel, extra=Extra.forbid):
+    id: str
 
 
 class ServiceArea(BaseModel, extra=Extra.forbid):
@@ -532,7 +541,7 @@ class ServiceArea(BaseModel, extra=Extra.forbid):
     """TopoJSON"""
 
 
-class IncidentsIncident(BaseModel, extra=Extra.forbid):
+class IncidentsEntry(BaseModel, extra=Extra.forbid):
     bbox: BoundingBox
     etag: str
     provider_id: str
@@ -546,7 +555,7 @@ class Incident(BaseModel, extra=Extra.forbid):
 
 
 class Incidents(BaseModel, extra=Extra.forbid):
-    incidents: list[IncidentsIncident]
+    incidents: list[IncidentsEntry]
 
 
 class AlertResource(BaseModel, extra=Extra.forbid):

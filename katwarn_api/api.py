@@ -2,8 +2,10 @@
 
 from urllib.parse import quote
 
-from .models import (Alert, Incident, Incidents, ServiceArea, ServiceAreaInfos,
-                     ServiceAreas, Topic, TopicAlert, TopicDescription, Topics)
+from .models import (Alert, Incident, Incidents, ServiceArea, ServiceAreaInfo,
+                     ServiceAreaInfos, ServiceAreaObjectProperties,
+                     ServiceAreaProperties, ServiceAreas, Topic, TopicAlert,
+                     TopicDescription, Topics)
 from .utils import Service
 
 
@@ -66,15 +68,29 @@ class KatWarnApi:
         r.raise_for_status()
         return ServiceArea.parse_raw(r.content)
 
+    def get_service_area_properties(
+        self, service_area: ServiceArea
+    ) -> ServiceAreaProperties:
+        return ServiceAreaProperties.parse_obj(service_area.service_area["properties"])
+
+    def get_service_area_objects(
+        self, service_area: ServiceArea
+    ) -> dict[str, ServiceAreaObjectProperties]:
+        objects = service_area.service_area["objects"]
+        results = {}
+        for key, obj in objects.items():
+            results[key] = ServiceAreaObjectProperties.parse_obj(obj["properties"])
+        return results
+
     def get_service_area_infos(self, provider_id: str) -> ServiceAreaInfos:
         service = Service.create("servicearea")
         r = service.get(f"{service.url}/service_areas/{quote(provider_id)}/infos")
         r.raise_for_status()
         return ServiceAreaInfos.parse_raw(r.content)
 
-    def get_service_area_info(self, info_id) -> dict:
+    def get_service_area_info(self, info_id) -> ServiceAreaInfo:
         # I've never seen this one in the wild, so I don't know what it looks like
         service = Service.create("servicearea")
         r = service.get(f"{service.url}/service_areas/infos/{quote(info_id)}")
         r.raise_for_status()
-        return r.json()
+        return ServiceAreaInfo.parse_raw(r.content)

@@ -24,7 +24,10 @@ def dump_all() -> dict[str, str]:
     for entry in dump(service, f"{service.url}/service_areas")["index"]:
         provider_id = entry["provider_id"]
         dump(service, f"{service.url}/service_areas/{quote(provider_id)}")
-        dump(service, f"{service.url}/service_areas/{quote(provider_id)}/infos")
+        infos = dump(service, f"{service.url}/service_areas/{quote(provider_id)}/infos")
+        for entry in infos["infos"]:
+            entry_id = entry["id"]
+            dump(service, f"{service.url}/service_areas/infos/{quote(entry_id)}")
 
     service = Service.create("content")
     for entry in dump(service, f"{service.url}/incidents")["incidents"]:

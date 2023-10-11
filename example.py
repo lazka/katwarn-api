@@ -19,9 +19,10 @@ def main():
     print("=== All service areas ===")
     for entry in api.get_service_areas().index:
         service_area = api.get_service_area(entry.provider_id)
-        print(
-            f"{entry.provider_id}: {service_area.service_area['properties']['longhand']}"
-        )
+        props = api.get_service_area_properties(service_area)
+        print(f"{entry.provider_id}: {props.longhand}")
+        for key, obj_props in api.get_service_area_objects(service_area).items():
+            print(f"  - [{key}] {obj_props.longhand}")
 
     # All alerts for topics
     print("=== All alerts for topics ===")
