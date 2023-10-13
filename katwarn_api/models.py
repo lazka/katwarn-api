@@ -4,7 +4,7 @@ import datetime
 from enum import Enum
 from typing import NamedTuple, Optional
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
 
 
 class ContentType(str, Enum):
@@ -500,126 +500,126 @@ class BoundingBox(NamedTuple):
     ymax: float
 
 
-class ServiceAreasEntry(BaseModel, extra=Extra.forbid):
+class ServiceAreasEntry(BaseModel, extra="forbid"):
     bbox: BoundingBox
     etag: str
     provider_id: str
 
 
-class ServiceAreas(BaseModel, extra=Extra.forbid):
+class ServiceAreas(BaseModel, extra="forbid"):
     index: list[ServiceAreasEntry]
 
 
-class ServiceAreaProperties(BaseModel, extra=Extra.forbid):
+class ServiceAreaProperties(BaseModel, extra="forbid"):
     content_url: str
     longhand: str
     shorthand: str
     area_infos_available: Optional[bool] = False
 
 
-class ServiceAreaObjectProperties(BaseModel, extra=Extra.forbid):
+class ServiceAreaObjectProperties(BaseModel, extra="forbid"):
     longhand: str
     shorthand: str
-    priority: Optional[int]
+    priority: Optional[int] = None
 
 
-class ServiceAreaInfosEntry(BaseModel, extra=Extra.forbid):
+class ServiceAreaInfosEntry(BaseModel, extra="forbid"):
     id: str
     etag: str
 
 
-class ServiceAreaInfos(BaseModel, extra=Extra.forbid):
+class ServiceAreaInfos(BaseModel, extra="forbid"):
     infos: list[ServiceAreaInfosEntry]
 
 
-class ServiceAreaInfo(BaseModel, extra=Extra.forbid):
+class ServiceAreaInfo(BaseModel, extra="forbid"):
     id: str
 
 
-class ServiceArea(BaseModel, extra=Extra.forbid):
+class ServiceArea(BaseModel, extra="forbid"):
     service_area: dict
     """TopoJSON"""
 
 
-class IncidentsEntry(BaseModel, extra=Extra.forbid):
+class IncidentsEntry(BaseModel, extra="forbid"):
     bbox: BoundingBox
     etag: str
     provider_id: str
     id: str
 
 
-class Incident(BaseModel, extra=Extra.forbid):
+class Incident(BaseModel, extra="forbid"):
     alerts: list[str]
     bbox: BoundingBox
     id: str
 
 
-class Incidents(BaseModel, extra=Extra.forbid):
+class Incidents(BaseModel, extra="forbid"):
     incidents: list[IncidentsEntry]
 
 
-class AlertResource(BaseModel, extra=Extra.forbid):
+class AlertResource(BaseModel, extra="forbid"):
     mime_type: str
     uri: str
 
 
-class AlertRestriction(BaseModel, extra=Extra.forbid):
-    topics: Optional[list[str]]
-    spatial: Optional[str]
+class AlertRestriction(BaseModel, extra="forbid"):
+    topics: Optional[list[str]] = None
+    spatial: Optional[str] = None
 
 
-class BaseAlert(BaseModel, extra=Extra.forbid):
+class BaseAlert(BaseModel, extra="forbid"):
     acknowledgeable: bool
     checksum: str
     content_type: ContentType
-    description: Optional[str]
+    description: Optional[str] = None
     effective: datetime.datetime
     event_code: EventCode
-    expires: Optional[datetime.datetime]
-    event_type: Optional[str]
+    expires: Optional[datetime.datetime] = None
+    event_type: Optional[str] = None
     headline: str
     id: str
     issuer: str
     language: str
-    locality: Optional[str]
+    locality: Optional[str] = None
     notifiable: bool
     provider_id: str
-    resources: Optional[list[AlertResource]]
-    restriction: Optional[AlertRestriction]
+    resources: Optional[list[AlertResource]] = None
+    restriction: Optional[AlertRestriction] = None
     sender_id: str
     sent: str
     severity: Severity
     subject: str
-    web: Optional[str]
-    instruction: Optional[list[str]]
-    contact: Optional[str]
-    references: Optional[str]
-    visibility: Optional[str]
+    web: Optional[str] = None
+    instruction: Optional[list[str]] = None
+    contact: Optional[str] = None
+    references: Optional[str] = None
+    visibility: Optional[str] = None
 
 
-class TopicAlert(BaseAlert, extra=Extra.forbid):
+class TopicAlert(BaseAlert, extra="forbid"):
     pass
 
 
-class Alert(BaseAlert, extra=Extra.forbid):
+class Alert(BaseAlert, extra="forbid"):
     geometry: dict
     """GeoJSON"""
 
 
-class Topics(BaseModel, extra=Extra.forbid):
+class Topics(BaseModel, extra="forbid"):
     topics: list[str]
 
 
-class TopicIncident(BaseModel, extra=Extra.forbid):
+class TopicIncident(BaseModel, extra="forbid"):
     id: str
     alerts: list[str]
 
 
-class Topic(BaseModel, extra=Extra.forbid):
+class Topic(BaseModel, extra="forbid"):
     incidents: list[TopicIncident]
 
 
-class TopicDescription(BaseModel, extra=Extra.forbid):
+class TopicDescription(BaseModel, extra="forbid"):
     background: dict[str, str]
     category: str
     description: str
@@ -632,4 +632,4 @@ class TopicDescription(BaseModel, extra=Extra.forbid):
     recommended: bool
     sharable: bool
     sublabel: str
-    web: Optional[str]
+    web: Optional[str] = None
