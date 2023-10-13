@@ -572,7 +572,7 @@ class BaseAlert(BaseModel, extra=Extra.forbid):
     acknowledgeable: bool
     checksum: str
     content_type: ContentType
-    description: str
+    description: Optional[str]
     effective: datetime.datetime
     event_code: EventCode
     expires: Optional[datetime.datetime]
