@@ -42,6 +42,7 @@ def main():
 
         def fixup_topo_json_for_folium(topo_json: dict):
             # Folium only supports TopoJSON with GeometryCollection, so hack it together
+            # https://github.com/python-visualization/folium/issues/1816
             for key in topo_json["objects"].keys():
                 orig = topo_json["objects"][key]
                 new = {"type": "GeometryCollection", "geometries": [orig]}
