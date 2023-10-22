@@ -14,6 +14,9 @@ def dump_all() -> dict[str, str]:
     def dump(service: Service, url: str):
         print(f"GET {url}")
         r = service.get(url)
+        if r.status_code == 404:
+            print(f"{url} not found")
+            return None
         r.raise_for_status()
         result = r.json()
         # re-dump to ensure consistent formatting/ordering
@@ -33,6 +36,8 @@ def dump_all() -> dict[str, str]:
     for entry in dump(service, f"{service.url}/incidents")["incidents"]:
         incident_id = entry["id"]
         incident = dump(service, f"{service.url}/incidents/{quote(incident_id)}")
+        if incident is None:
+            continue
         for alert_id in incident["alerts"]:
             dump(
                 service,
