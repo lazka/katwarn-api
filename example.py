@@ -35,6 +35,11 @@ def main():
                 alert = api.get_topic_alert(incident.id, alert_id)
                 print(f"  - [{alert.event_code.value}] {alert.headline}")
 
+    # Prevention messages
+    for entry in api.get_preventions().messages:
+        prev = api.get_prevention(entry.id)
+        print(f"{prev.headline}")
+
 
 if __name__ == "__main__":
     main()

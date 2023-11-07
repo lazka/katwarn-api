@@ -558,6 +558,25 @@ class Incidents(BaseModel, extra="forbid"):
     incidents: list[IncidentsEntry]
 
 
+class PreventionsEntry(BaseModel, extra="forbid"):
+    id: str
+
+
+class Preventions(BaseModel, extra="forbid"):
+    messages: list[PreventionsEntry]
+
+
+class Prevention(BaseModel, extra="forbid"):
+    id: str
+    language: str
+    web: str
+    subject: str
+    description: str
+    headline: str
+    icon: dict[str, str]
+    background: dict[str, str]
+
+
 class AlertResource(BaseModel, extra="forbid"):
     mime_type: str
     uri: str

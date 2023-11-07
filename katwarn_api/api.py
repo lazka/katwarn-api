@@ -2,10 +2,10 @@
 
 from urllib.parse import quote
 
-from .models import (Alert, Incident, Incidents, ServiceArea, ServiceAreaInfo,
-                     ServiceAreaInfos, ServiceAreaObjectProperties,
-                     ServiceAreaProperties, ServiceAreas, Topic, TopicAlert,
-                     TopicDescription, Topics)
+from .models import (Alert, Incident, Incidents, Prevention, Preventions,
+                     ServiceArea, ServiceAreaInfo, ServiceAreaInfos,
+                     ServiceAreaObjectProperties, ServiceAreaProperties,
+                     ServiceAreas, Topic, TopicAlert, TopicDescription, Topics)
 from .utils import Service
 
 
@@ -88,9 +88,21 @@ class KatWarnApi:
         r.raise_for_status()
         return ServiceAreaInfos.model_validate_json(r.content)
 
-    def get_service_area_info(self, info_id) -> ServiceAreaInfo:
+    def get_service_area_info(self, info_id: str) -> ServiceAreaInfo:
         # I've never seen this one in the wild, so I don't know what it looks like
         service = Service.create("servicearea")
         r = service.get(f"{service.url}/service_areas/infos/{quote(info_id)}")
         r.raise_for_status()
         return ServiceAreaInfo.model_validate_json(r.content)
+
+    def get_preventions(self) -> Preventions:
+        service = Service.create("prevention")
+        r = service.get(f"{service.url}/prevention")
+        r.raise_for_status()
+        return Preventions.model_validate_json(r.content)
+
+    def get_prevention(self, prevention_id: str) -> Prevention:
+        service = Service.create("prevention")
+        r = service.get(f"{service.url}/prevention/{quote(prevention_id)}")
+        r.raise_for_status()
+        return Prevention.model_validate_json(r.content)

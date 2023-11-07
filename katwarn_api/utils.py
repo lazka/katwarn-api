@@ -85,4 +85,12 @@ _SERVICES: dict[str, Service] = {
             "9dc020f3:FSf6QqeO+uKmj8CIc4RJGuZIIHEIf24c27MLQUdapW0=",
         ],
     ),
+    "prevention": Service(
+        url="https://content.omega.kwrn.eu",
+        content_type="application/vnd.kwrn.v2+json",
+        api_keys=[
+            "2130fe5a:NGUwZGNlNTc3MTBhMTdjMjNjZTQ2M2I1MzllNWU0NWRmZDhlN2Y1Zg==",
+            "8b102a48:YzU5NmFkZjRkMzVmOWZhMTJjOTZhODdlZjJiYWUzNTljYWY0N2ViOQ==",
+        ],
+    ),
 }

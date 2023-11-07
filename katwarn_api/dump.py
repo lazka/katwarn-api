@@ -55,4 +55,9 @@ def dump_all() -> dict[str, str]:
                     f"{service.url}/incidents/{quote(incident['id'])}/{quote(alert)}",
                 )
 
+    service = Service.create("prevention")
+    for entry in dump(service, f"{service.url}/prevention")["messages"]:
+        message_id = entry["id"]
+        dump(service, f"{service.url}/prevention/{quote(message_id)}")
+
     return results
