@@ -16,7 +16,7 @@ pydantic = "^2.4"
 
 [tool.poetry.group.dev.dependencies]
 types-requests = "^2.31.0.8"
-flake8 = "^6.1.0"
+flake8 = "^7.0.0"
 requests-mock = "^1.11.0"
 pytest = "^7.4.2"
 
