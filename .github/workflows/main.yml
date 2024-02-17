@@ -29,9 +29,8 @@ jobs:
         run: |
           mkdir -p build
           python dump.py -o build/dump.json
-          cp .ci/index.html ./build
 
-      - name: Deploy
+      - name: Push dump
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -39,3 +38,27 @@ jobs:
           publish_branch: dump
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Build map
+        run: |
+          cp .ci/index.html ./build
+          python folium_example.py -d build/dump.json -o build/map.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build
+
+  deploy-pages:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: update
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
