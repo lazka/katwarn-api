@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 
+from requests import HTTPError
+
 from katwarn_api import KatWarnApi
 
 
@@ -10,7 +12,13 @@ def main():
     # All alerts
     print("=== All alerts ===")
     for entry in api.get_incidents().incidents:
-        incident = api.get_incident(entry.id)
+        try:
+            incident = api.get_incident(entry.id)
+        except HTTPError as e:
+            if e.response.status_code == 404:
+                # XXX: some incidents are broken
+                continue
+            raise
         for alert_id in incident.alerts:
             alert = api.get_alert(incident.id, alert_id)
             print(f"{entry.provider_id}: [{alert.event_code.value}] {alert.headline}")

@@ -4,6 +4,7 @@
 import argparse
 
 import folium
+from requests import HTTPError
 
 from katwarn_api import KatWarnApi
 
@@ -61,7 +62,13 @@ def main():
     map.keep_in_front(alert_map)
 
     for entry in api.get_incidents().incidents:
-        incident = api.get_incident(entry.id)
+        try:
+            incident = api.get_incident(entry.id)
+        except HTTPError as e:
+            if e.response.status_code == 404:
+                # XXX: some incidents are broken
+                continue
+            raise
         boxes.append(incident.bbox)
         for alert_id in incident.alerts:
             alert = api.get_alert(incident.id, alert_id)
