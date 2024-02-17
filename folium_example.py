@@ -2,11 +2,34 @@
 # SPDX-License-Identifier: MIT
 
 import argparse
+import json
 
 import folium
 from requests import HTTPError
+import requests_mock
+from jinja2 import Template
 
 from katwarn_api import KatWarnApi
+
+
+def mock_requests(dump_path: str) -> None:
+
+    with open("dump.json", "r") as f:
+        dump = json.load(f)
+
+    def text_callback(request, context):
+        if request.url in dump:
+            context.status_code = 200
+            return dump[request.url]
+        else:
+            context.status_code = 404
+            return ""
+
+    import re
+    adapter = requests_mock.Adapter()
+    adapter.register_uri('GET', re.compile('.*'), text=text_callback)
+    mocker = requests_mock.Mocker(adapter=adapter)
+    mocker.start()
 
 
 def main():
@@ -19,7 +42,17 @@ def main():
         default="map.html",
         help="Output file",
     )
+    parser.add_argument(
+        "-d",
+        "--from-dump",
+        metavar="PATH",
+        type=str,
+        help="Load data from dump instead of the web API",
+    )
     args = parser.parse_args()
+
+    if args.from_dump is not None:
+        mock_requests(args.from_dump)
 
     api = KatWarnApi()
     map = folium.Map()
@@ -77,10 +110,13 @@ def main():
             def style_function(x):
                 return {"color": "red"}
 
+            template = Template("<h4>{{ alert.headline }}</h4><p>{{ alert.description }}</p>")
+            popup = folium.Popup(template.render(alert=alert), max_width=600)
             folium.GeoJson(
                 alert.geometry,
                 name=alert.headline,
                 tooltip=alert.headline,
+                popup=popup,
                 style_function=style_function,
             ).add_to(alert_map)
 
