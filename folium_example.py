@@ -14,7 +14,7 @@ from katwarn_api import KatWarnApi
 
 def mock_requests(dump_path: str) -> None:
 
-    with open("dump.json", "r") as f:
+    with open(dump_path, "r") as f:
         dump = json.load(f)
 
     def text_callback(request, context):
