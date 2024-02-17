@@ -42,6 +42,7 @@ jobs:
       - name: Build map
         run: |
           cp .ci/index.html ./build
+          cp .ci/api.html ./build
           python folium_example.py -d build/dump.json -o build/map.html
 
       - name: Upload artifact

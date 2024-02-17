@@ -1,93 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.5.0/json-viewer/jquery.json-viewer.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.5.0/json-viewer/jquery.json-viewer.min.css" rel="stylesheet">
-
-    <title>API JSON Browser</title>
+    <title>Katwarn API</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            display: flex;
-            width: 100%;
-        }
-
-        .sidebar {
-            flex: 1;
-            padding: 10px;
-            border-right: 1px solid #ccc;
-            overflow-y: scroll;
-            overflow:scroll;
-            max-height: 100vh;
-        }
-
-        .content {
-            flex: 2;
-            padding: 20px;
-            max-width: 50%;
-            overflow: hidden;
-            max-height: 100vh;
-        }
-
-        #jsonContent {
-            overflow: scroll;
-            max-height: 85vh;
-        }
-
-        .sidebar li {
-            margin-bottom: 3px;
+            font-family: sans-serif;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <h2>URLs</h2>
-            <ul id="urlList"></ul>
-        </div>
-        <div class="content">
-            <h2>JSON Content</h2>
-            <pre id="jsonContent"></pre>
-        </div>
-    </div>
-
-    <script type="module">
-        async function main() {
-            let response = await fetch('dump.json');
-            let data = await response.json();
-    
-            const urlList = document.getElementById('urlList');
-            const urls = Object.keys(data);
-
-            urls.forEach(url => {
-                const listItem = document.createElement('li');
-                const link = document.createElement('a');
-                link.href = "#";
-                link.textContent = url;
-                link.addEventListener('click', () => displayJSONContent(data[url]));
-                listItem.appendChild(link);
-                urlList.appendChild(listItem);
-            });
-
-            function displayJSONContent(content) {
-                const jsonContent = document.getElementById('jsonContent');
-                $(jsonContent).jsonViewer(JSON.parse(content));
-            }
-
-            $(document).ready(() => {
-                displayJSONContent(data[urls[0]]);
-            });
-        }
-
-        main();
-    </script>
+    <h1>Welcome to Katwarn API</h1>
+    <ul>
+        <li><a href="api.html">API JSON Browser</a></li>
+        <li><a href="map.html">Incidents Map</a></li>
+    </ul>
 </body>
 </html>
