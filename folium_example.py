@@ -105,18 +105,44 @@ def main():
         boxes.append(incident.bbox)
         for alert_id in incident.alerts:
             alert = api.get_alert(incident.id, alert_id)
-            alert
 
-            def style_function(x):
-                return {"color": "red"}
+            def style_function(x, alert=alert):
+                if alert.severity == 'minor':
+                    return {"color": "#edd400"}
+                elif alert.severity == 'moderate':
+                    return {"color": "#f57900"}
+                elif alert.severity == 'severe':
+                    return {"color": "#cc0000"}
+                elif alert.severity == 'extreme':
+                    return {"color": "#a40000"}
+                else:
+                    return {}
 
-            template = Template("<h4>{{ alert.headline }}</h4><p>{{ alert.description }}</p>")
-            popup = folium.Popup(template.render(alert=alert), max_width=600)
+            def highlight_function(x):
+                return {"weight": 5, "color": "#333"}
+
+            template = Template("""
+<div style="width: 85vw; max-width: 500px">
+    <h4>{{ alert.headline }}</h4>
+    <dl>
+        <dt>Beschreibung</dt>
+        <dd>{{ alert.description }}</dd>
+        <dt>Schwere</dt>
+        <dd>{{ alert.severity.value }}</dd>
+        {% if alert.web %}
+            <dt>Web</dt>
+            <dd><a href="{{ alert.web }}" target="_blank">{{ alert.web }}</a></dd>
+        {% endif %}
+    </dl>
+</div>
+            """)
+            popup = folium.Popup(template.render(alert=alert))
             folium.GeoJson(
                 alert.geometry,
                 name=alert.headline,
                 tooltip=alert.headline,
                 popup=popup,
+                highlight_function=highlight_function,
                 style_function=style_function,
             ).add_to(alert_map)
 
