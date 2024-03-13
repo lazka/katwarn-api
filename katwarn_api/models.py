@@ -588,7 +588,7 @@ class AlertRestriction(BaseModel, extra="forbid"):
 
 
 class BaseAlert(BaseModel, extra="forbid"):
-    acknowledgeable: bool
+    acknowledgeable: Optional[bool] = None
     checksum: str
     content_type: ContentType
     description: Optional[str] = None
@@ -601,7 +601,7 @@ class BaseAlert(BaseModel, extra="forbid"):
     issuer: str
     language: str
     locality: Optional[str] = None
-    notifiable: bool
+    notifiable: Optional[bool] = None
     provider_id: str
     resources: Optional[list[AlertResource]] = None
     restriction: Optional[AlertRestriction] = None
