@@ -13,7 +13,7 @@ def dump_all() -> dict[str, str]:
 
     def dump(service: Service, url: str):
         print(f"GET {url}")
-        r = service.get(url)
+        r = service.get(url, max_retries=10)
         if r.status_code == 404:
             print(f"{url} not found")
             return None

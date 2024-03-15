@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 
 import requests
 from requests.auth import AuthBase
+from requests.adapters import HTTPAdapter
 
 
 class KatwarnAuth(AuthBase):
@@ -48,7 +49,10 @@ class Service:
         kwargs.setdefault("headers", {}).update(self.get_headers())
         kwargs.setdefault("verify", self.get_verify())
         kwargs.setdefault("auth", self.get_auth())
-        return requests.get(*args, **kwargs)
+        adapter = HTTPAdapter(max_retries=kwargs.pop("max_retries", 3))
+        session = requests.Session()
+        session.mount("https://", adapter)
+        return session.get(*args, **kwargs)
 
     def get_verify(self) -> str:
         return os.path.join(os.path.dirname(os.path.realpath(__file__)), "kwrn-ca.pem")
