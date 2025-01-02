@@ -10,7 +10,7 @@ history.
 way.
 
 On the national alert test day, when a test alert was displayed on the official
-[KATWARN Austria](https://www.bmi.gv.at/204/katwarn/start.aspx) app, I wondered
+[KATWARN Austria](http://web.archive.org/web/20240916082119/https://www.bmi.gv.at/204/katwarn/start.aspx) app, I wondered
 if there was also a website where this data was displayed, and if there was any
 kind of history to see what types of alerts are usually reported via KATWARN and
 how often.
