@@ -1,6 +1,13 @@
 # Python API Client for KATWARN
 
-NOTE: This is just a hobby project and not affiliated with KATWARN in any way.
+**UPDATE 2025-01-02:** Since KATWARN is no longer used in Austria since
+2024-09-30, and the last Austrian alert expired at the end of 2024 this API is
+no longer useful for Austria and the archival process has been stopped as of
+2025-01-02. The archive of all alerts in 2024 is still available in the git
+history.
+
+**NOTE:** This is just a hobby project and not affiliated with KATWARN in any
+way.
 
 On the national alert test day, when a test alert was displayed on the official
 [KATWARN Austria](https://www.bmi.gv.at/204/katwarn/start.aspx) app, I wondered
